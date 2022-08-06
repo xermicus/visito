@@ -8,18 +8,17 @@ pub enum Stmt {
 
 impl AstBase for Stmt {
     fn accept(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
-        self.visit_children(ast_visitor);
         ast_visitor.visit_stmt(self);
     }
 
     fn visit_children(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
         match self {
             Stmt::Expr(expr) => {
-                expr.visit_children(ast_visitor);
+                expr.accept(ast_visitor);
             }
             Stmt::Let(name, expr) => {
-                name.visit_children(ast_visitor);
-                expr.visit_children(ast_visitor);
+                name.accept(ast_visitor);
+                expr.accept(ast_visitor);
             }
         }
     }
@@ -34,10 +33,6 @@ impl AstBase for Name {
     fn accept(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
         ast_visitor.visit_name(self);
     }
-
-    fn visit_children(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
-        self.accept(ast_visitor);
-    }
 }
 
 #[derive(Debug)]
@@ -49,7 +44,6 @@ pub enum Expr {
 
 impl AstBase for Expr {
     fn accept(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
-        self.visit_children(ast_visitor);
         ast_visitor.visit_expr(self);
     }
 
@@ -57,14 +51,13 @@ impl AstBase for Expr {
         match self {
             Expr::IntLit(_) => {}
             Expr::Add(left, right) => {
-                left.visit_children(ast_visitor);
-                right.visit_children(ast_visitor);
+                left.accept(ast_visitor);
+                right.accept(ast_visitor);
             }
             Expr::Sub(left, right) => {
-                left.visit_children(ast_visitor);
-                right.visit_children(ast_visitor);
+                left.accept(ast_visitor);
+                right.accept(ast_visitor);
             }
         }
-        ast_visitor.visit_expr(self);
     }
 }
