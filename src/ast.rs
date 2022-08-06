@@ -55,10 +55,12 @@ impl AstBase for Expr {
             Expr::Add(left, right) => {
                 left.visit_children(ast_visitor);
                 right.visit_children(ast_visitor);
+                ast_visitor.visit_expr(self);
             }
             Expr::Sub(left, right) => {
                 left.visit_children(ast_visitor);
                 right.visit_children(ast_visitor);
+                ast_visitor.visit_expr(self);
             }
         }
     }
