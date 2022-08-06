@@ -1,5 +1,5 @@
 use crate::{
-    ast::{Expr, Stmt},
+    ast::{Expr, Name, Stmt},
     interface::{AstBase, AstVisitor},
 };
 
@@ -7,7 +7,7 @@ use crate::{
 pub struct CountVisitor(i64);
 
 impl AstVisitor for CountVisitor {
-    fn visit_name(&mut self, node: &crate::ast::Name) {
+    fn visit_name(&mut self, node: &Name) {
         node.visit_children(self);
         println!("{:?}", node);
         self.0 += 1;

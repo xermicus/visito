@@ -1,4 +1,4 @@
-use crate::interface::AstBase;
+use crate::interface::{AstBase, AstVisitor};
 
 #[derive(Debug)]
 pub enum Stmt {
@@ -7,11 +7,11 @@ pub enum Stmt {
 }
 
 impl AstBase for Stmt {
-    fn accept(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
+    fn accept(&self, ast_visitor: &mut impl AstVisitor) {
         ast_visitor.visit_stmt(self);
     }
 
-    fn visit_children(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
+    fn visit_children(&self, ast_visitor: &mut impl AstVisitor) {
         match self {
             Stmt::Expr(expr) => {
                 expr.accept(ast_visitor);
@@ -30,7 +30,7 @@ pub struct Name {
 }
 
 impl AstBase for Name {
-    fn accept(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
+    fn accept(&self, ast_visitor: &mut impl AstVisitor) {
         ast_visitor.visit_name(self);
     }
 }
@@ -43,11 +43,11 @@ pub enum Expr {
 }
 
 impl AstBase for Expr {
-    fn accept(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
+    fn accept(&self, ast_visitor: &mut impl AstVisitor) {
         ast_visitor.visit_expr(self);
     }
 
-    fn visit_children(&self, ast_visitor: &mut impl crate::interface::AstVisitor) {
+    fn visit_children(&self, ast_visitor: &mut impl AstVisitor) {
         match self {
             Expr::IntLit(_) => {}
             Expr::Add(left, right) => {
